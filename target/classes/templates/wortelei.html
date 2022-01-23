@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Wordle</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+    body {
+        font-family: "Lucida Console", monospace;
+    }
+    .wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 10px;
+        grid-template-rows: 1fr 17em 1fr;
+        grid-auto-rows: fit-content(200em);
+    }
+    .header {
+        grid-column: 1 / 5;
+        grid-row: 1 / 1;
+
+    }
+    .spiel {
+        grid-column: 1 / 5;
+        grid-row: 2 / 2;
+        grid-auto-rows: fit-content(200em)
+    }
+    .label {
+        grid-column: 1 / 1;
+        grid-row: 3 / 3;
+    }
+    .eingabe {
+        grid-column: 1 / 5;
+        grid-row: 3 / 3;
+    }
+    .button {
+        grid-column: 5 / 5;
+        grid-row: 3 / 3;
+    }
+    .tile {
+    width: 100%;
+    height: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: bold;
+    vertical-align: middle;
+    box-sizing: border-box;
+    color: black;
+    text-transform: uppercase;
+    user-select: none;
+  }
+  .tile::before {
+    content: '';
+    display: inline-block;
+    padding-bottom: 100%;
+  }
+ .tile[data-state='empty'] {
+    border: 2px solid white;
+  }
+  .tile[data-state='correct'] {
+    background-color: orange;
+    color: white;
+  }
+  .tile[data-state='present'] {
+    background-color: blue;
+    color: white;
+  }
+  .tile[data-state='absent'] {
+    background-color: darkgrey;
+    color: white;
+  }
+  #board {
+display: grid;
+grid-gap: 5px;
+padding: 10px;
+box-sizing: border-box;
+}
+.row {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+grid-gap: 5px;
+}
+.ueberschrift {
+display: grid;
+grid-column: span 5;
+}
+#board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: visible;
+  }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+<div class="header"><h1>Wortelei</h1></div>
+    <div class="spiel">
+    <div id="board-container">
+        <div th:if="${fehler != null}">
+            <span th:text="${fehler}">Fehlertext</span>
+        </div>
+    <div th:if="${wortelei.versuche.size}>0">
+        <div id="board" style="width: 142px; height: 168px;">
+            <div class="row" th:utext="${wortelei.versucheAsTable}">liste</div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <div class="eingabe">
+        <form action="#" th:action="@{/wortelei}" th:object="${wortelei}" method="post">
+            Nächster Versuch:
+            <input type="text" th:field="*{versuch}" autofocus="autofocus"/>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+</body>
+</html>
